@@ -1,5 +1,6 @@
 package com.teamabnormals.boatload.core.data.client;
 
+import com.teamabnormals.blueprint.core.data.client.BlueprintLanguageProvider;
 import com.teamabnormals.boatload.core.Boatload;
 import com.teamabnormals.boatload.core.other.BoatloadUtil;
 import com.teamabnormals.boatload.core.registry.BoatloadEntityTypes;
@@ -7,14 +8,12 @@ import com.teamabnormals.boatload.core.registry.BoatloadItems;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
-import net.minecraftforge.common.data.LanguageProvider;
 import net.minecraftforge.registries.ForgeRegistries;
-import org.apache.commons.lang3.text.WordUtils;
 
-public class BoatloadLanguageProvider extends LanguageProvider {
+public class BoatloadLanguageProvider extends BlueprintLanguageProvider {
 
 	public BoatloadLanguageProvider(PackOutput output) {
-		super(output, Boatload.MOD_ID, "en_us");
+		super(output, Boatload.MOD_ID);
 	}
 
 	@Override
@@ -31,11 +30,6 @@ public class BoatloadLanguageProvider extends LanguageProvider {
 		BoatloadUtil.getLargeBoats().forEach(this::add);
 	}
 
-	private void add(Item item) {
-		ResourceLocation name = ForgeRegistries.ITEMS.getKey(item);
-		if (name != null) this.add(item, format(name));
-	}
-
 	private void addChestBoat(Item item) {
 		ResourceLocation name = ForgeRegistries.ITEMS.getKey(item);
 		if (name != null)
@@ -46,9 +40,5 @@ public class BoatloadLanguageProvider extends LanguageProvider {
 		ResourceLocation name = ForgeRegistries.ITEMS.getKey(item);
 		if (name != null)
 			this.add(item, format(name).replace("Furnace Boat", "Boat with Furnace"));
-	}
-
-	private String format(ResourceLocation registryName) {
-		return WordUtils.capitalizeFully(registryName.getPath().replace("_", " "));
 	}
 }
