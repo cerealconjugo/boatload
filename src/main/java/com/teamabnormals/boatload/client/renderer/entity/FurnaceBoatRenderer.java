@@ -87,7 +87,7 @@ public class FurnaceBoatRenderer extends EntityRenderer<FurnaceBoat> {
 	@Override
 	public ResourceLocation getTextureLocation(FurnaceBoat boat) {
 		String name = this.getModelWithLocation(boat).getFirst().toString();
-		if (boat.getFuel() > 0)
+		if (boat.getBurnTime() > 0)
 			name += "_on";
 		return new ResourceLocation(name + ".png");
 	}
