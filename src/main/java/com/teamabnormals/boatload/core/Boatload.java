@@ -20,6 +20,7 @@ import com.teamabnormals.boatload.core.other.BoatloadTrackedData;
 import com.teamabnormals.boatload.core.other.BoatloadUtil;
 import com.teamabnormals.boatload.core.registry.BoatloadEntityTypes;
 import com.teamabnormals.boatload.core.registry.BoatloadItems;
+import com.teamabnormals.boatload.core.registry.BoatloadMenuTypes;
 import com.teamabnormals.boatload.core.registry.helper.BoatloadItemSubRegistryHelper;
 import net.minecraft.client.model.BoatModel;
 import net.minecraft.core.HolderLookup.Provider;
@@ -36,6 +37,7 @@ import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -53,8 +55,10 @@ public class Boatload {
 
 		REGISTRY_HELPER.register(bus);
 		BoatloadEntityTypes.ENTITY_TYPES.register(bus);
+		BoatloadMenuTypes.MENU_TYPES.register(bus);
 
 		bus.addListener(this::commonSetup);
+		bus.addListener(this::clientSetup);
 		bus.addListener(this::dataSetup);
 
 		DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
@@ -69,6 +73,12 @@ public class Boatload {
 		event.enqueueWork(() -> {
 			BoatloadUtil.getFurnaceBoats().forEach(item -> DispenserBlock.registerBehavior(item, new FurnaceBoatDispenseItemBehavior(item.getType())));
 			BoatloadUtil.getLargeBoats().forEach(item -> DispenserBlock.registerBehavior(item, new LargeBoatDispenseItemBehavior(item.getType())));
+		});
+	}
+
+	private void clientSetup(FMLClientSetupEvent event) {
+		event.enqueueWork(() -> {
+			BoatloadMenuTypes.registerScreens();
 		});
 	}
 
